@@ -105,7 +105,7 @@ def _AddPrepareSubParser(subparsers):
   """Adds sub parser for sub command `prepare`."""
   def _Prepare(args):
     """The function of sub command `prepare`."""
-    device_id = _GetSimID(args.name)
+    device_id = _GetSimID(args.id)
     sdk = _PlatformToSdk(args.platform) if args.platform else _GetSdk(device_id)
     device_arch = args.arch
     with xctest_session.XctestSession(
@@ -142,7 +142,7 @@ def _AddTestSubParser(subparsers):
   """Adds sub parser for sub command `test`."""
   def _Test(args):
     """The function of sub command `test`."""
-    device_id = _GetSimID(args.name)
+    device_id = _GetSimID(args.id)
     sdk = _PlatformToSdk(args.platform) if args.platform else _GetSdk(device_id)
     device_arch = _GetDeviceArch(device_id, sdk)
     with xctest_session.XctestSession(
@@ -165,7 +165,7 @@ def _AddTestSubParser(subparsers):
            'simulator.')
   required_arguments = test_parser.add_argument_group('Required arguments')
   required_arguments.add_argument(
-      '--name',
+      '--id',
       required=True,
       help='The device name. The device can be iOS real device or simulator.')
   optional_arguments = test_parser.add_argument_group('Optional arguments')
