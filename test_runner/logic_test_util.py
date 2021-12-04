@@ -88,7 +88,10 @@ def RunLogicTestOnSim(sim_id,
     simctl_env_vars[_SIMCTL_ENV_VAR_PREFIX + "DYLD_FALLBACK_FRAMEWORK_PATH"] = "{0}/Library/Frameworks:{0}/Library/Private/Frameworks".format(platform_developer_dir)
 
   command = [
-      'xcrun', 'simctl', 'spawn', '-s', sim_id,
+      # Excluding the `[-s | --standalone]` since this populates the `UIScreen.main.scale`
+      # value when the `test_bundle_path` is ran.
+      # 'xcrun', 'simctl', 'spawn', '-s', sim_id,
+      'xcrun', 'simctl', 'spawn', sim_id,
       xctest_tool
   ]
   if args:
