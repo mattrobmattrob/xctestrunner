@@ -138,7 +138,10 @@ class XctestSession(object):
             'The test type %s is not supported. Supported test types are %s' %
             (test_type, ios_constants.SUPPORTED_TEST_TYPES))
 
-      if test_type != ios_constants.TestType.LOGIC_TEST:
+      # If we are a logic test and forcing to use `xcodebuild`, create a xctestrun_factory to be used for testing.
+      # This allows us to populate an xcresult bundle to house artifacts like those from snapshot test failures.
+      use_xcodebuild_logic_test = os.environ.get('REDDIT_XCTESTRUNNER_USE_XCODEBUILD_LOGIC_TEST', False)
+      if test_type != ios_constants.TestType.LOGIC_TEST or (test_type == ios_constants.TestType.LOGIC_TEST and use_xcodebuild_logic_test):
         xctestrun_factory = xctestrun.XctestRunFactory(
             app_under_test_dir, test_bundle_dir, self._sdk, self._device_arch,
             test_type, signing_options, self._work_dir)
